@@ -1,7 +1,7 @@
 {
   "name": "ts-axios",
   "version": "0.0.0",
-  "description": "",
+  "description": "用typescript重写axios",
   "keywords": [],
   "main": "dist/ts-axios.umd.js",
   "module": "dist/ts-axios.es5.js",
