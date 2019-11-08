@@ -2,7 +2,7 @@
   "name": "ts-axios",
   "version": "0.0.0",
   "description": "用typescript重写axios",
-  "keywords": [],
+  "keywords": ["typescript", "axios"],
   "main": "dist/ts-axios.umd.js",
   "module": "dist/ts-axios.es5.js",
   "typings": "dist/types/ts-axios.d.ts",
@@ -12,7 +12,7 @@
   "author": "yanglin <494657028@qq.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:Yutiy/ts-axios.git"
   },
   "license": "MIT",
   "engines": {
