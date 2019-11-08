@@ -1,4 +1,4 @@
-import axios from '../../src/index'
+import axios from '../../src'
 
 // get query
 // --------------------------------------------------------------------
@@ -101,4 +101,29 @@ axios({
   method: 'post',
   url: '/base/post',
   data: searchParams
+})
+
+// post response
+// --------------------------------------------------------------------
+axios({
+  method: 'post',
+  url: '/base/post',
+  data: {
+    a: 1,
+    b: 2
+  }
+}).then(res => {
+  console.log(res);
+})
+
+axios({
+  method: 'post',
+  url: '/base/post',
+  responseType: 'json',
+  data: {
+    a: 1,
+    b: 2
+  }
+}).then(res => {
+  console.log(res);
 })
