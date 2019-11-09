@@ -20,9 +20,11 @@ interface PromiseChain<T> {
 }
 
 export default class Axios {
+  defaults: AxiosRequestConfig
   interceptors: Interceptors
 
-  constructor() {
+  constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>()
@@ -60,7 +62,7 @@ export default class Axios {
       promise = promise.then(resolved, rejected)
     }
 
-    return promise
+    return promise // return dispatchRequest(config)
   }
 
   get(url: string, config?: AxiosRequestConfig): AxiosPromise {
