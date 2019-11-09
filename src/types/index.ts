@@ -22,6 +22,13 @@ export interface AxiosRequestConfig {
   headers?: any
   timeout?: number
   responseType?: XMLHttpRequestResponseType
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+  [prapName: string]: any
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
 
 export interface AxiosResponse<T = any> {
@@ -65,6 +72,10 @@ export interface AxiosInstance extends Axios {
 
   // 函数重载
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
 }
 
 export interface ResolvedFn<T> {
