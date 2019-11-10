@@ -9,9 +9,9 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
     const {
       url,
-      method = 'get',
+      method,
       data = null,
-      headers,
+      headers = {},
       responseType,
       timeout,
       cancelToken,
@@ -27,7 +27,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     const request = new XMLHttpRequest()
 
     // url! -> 类型断言，确保不为空, 第三个参数为 async 是否是异步请求
-    request.open(method.toUpperCase(), url!, true)
+    request.open(method!.toUpperCase(), url!, true)
 
     configureRequest()
     addEvents()
@@ -61,7 +61,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         }
 
         const responseHeaders = parseHeaders(request.getAllResponseHeaders())
-        const responseData = responseType !== 'text' ? request.response : request.responseText
+        const responseData =
+          responseType && responseType !== 'text' ? request.response : request.responseText
         const response: AxiosResponse = {
           data: responseData,
           status: request.status,
@@ -112,7 +113,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       }
 
       if (auth) {
-        headers['Authorization'] = `Basic ${btoa(`${auth.username} : ${auth.password}`)}`
+        headers['Authorization'] = `Basic ${btoa(`${auth.username}:${auth.password}`)}`
       }
 
       Object.keys(headers).forEach(name => {
