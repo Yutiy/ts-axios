@@ -15,7 +15,8 @@ function encode(val: string): string {
     .replace(/%40/g, '@')
     .replace(/%3A/gi, ':')
     .replace(/%24/g, '$')
-    .replace(/%20/g, '+')
+    .replace(/%2C/gi, ',')
+    .replace(/%20/g, '+') // 约定将 空格 号转为 +
     .replace(/%5B/gi, '[')
     .replace(/%5D/gi, ']')
 }
