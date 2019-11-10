@@ -1,9 +1,15 @@
+const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const webpack = require('webpack')
+const atob = require('atob')
+const mutipart = require('connect-multiparty')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
+
+require('./server2')
 
 const app = express()
 const compiler = webpack(WebpackConfig)
@@ -15,11 +21,23 @@ app.use(webpackDevMiddleware(compiler, {
     chunks: false
   }
 }))
-
 app.use(webpackHotMiddleware(compiler))
+
+app.use(express.static(__dirname, {
+  setHeaders(res) {
+    res.cookie('XSRF-TOKEN-D', Math.random().toString(16).slice(2))
+  }
+}))
 app.use(express.static(__dirname))
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
+
+// 用于将文件上传到指定文件
+app.use(mutipart({
+  uploadDir: path.resolve(__dirname, 'accept-upload-file')
+}))
 
 const router = express.Router()
 
@@ -30,10 +48,12 @@ registerExtendRouter()
 registerInterceptorRrouter()
 registerConfigRouter()
 registerCancelRouter()
+registerMoreRouter()
+registerUploadRouter()
 
 app.use(router)
 
-const port = process.env.PORT || 8081
+const port = process.env.PORT || 8080
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`)
 })
@@ -160,5 +180,44 @@ function registerCancelRouter() {
     setTimeout(() => {
       res.json(req.body)
     }, 1000)
+  })
+}
+
+function registerMoreRouter() {
+  router.get('/more/get', (req, res) => {
+    res.json(req.cookies)
+  })
+
+  router.post('/more/post', function (req, res) {
+    const auth = req.headers.authorization
+    const [type, credentials] = auth.split(' ')
+    console.log('atob on server:', atob(credentials))
+    const [username, password] = atob(credentials).split(':').map(item => item.trim())
+    if (type === 'Basic' && username === 'chen' && password === '123456') {
+      res.json(req.body)
+    } else {
+      res.status(401)
+      res.end('UnAuthorization')
+    }
+  })
+
+  router.get('/more/304', function (req, res) {
+    res.status(304)
+    res.end()
+  })
+
+  router.get('/more/A', function (req, res) {
+    res.end('A')
+  })
+
+  router.get('/more/B', function (req, res) {
+    res.end('B')
+  })
+}
+
+function registerUploadRouter() {
+  router.post('/upload-download/upload', function (req, res) {
+    console.log(req.body, req.files)
+    res.end('upload success!')
   })
 }
