@@ -193,7 +193,7 @@ function registerMoreRouter() {
     const [type, credentials] = auth.split(' ')
     console.log('atob on server:', atob(credentials))
     const [username, password] = atob(credentials).split(':').map(item => item.trim())
-    if (type === 'Basic' && username === 'chen' && password === '123456') {
+    if (type === 'Basic' && username === 'yang' && password === '123456') {
       res.json(req.body)
     } else {
       res.status(401)
