@@ -120,7 +120,7 @@
     "nprogress": "^0.2.0",
     "prettier": "^1.14.3",
     "prompt": "^1.0.0",
-    "qs": "^6.9.1",
+    "qs": "^6.9.7",
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
     "rollup": "^0.67.0",
